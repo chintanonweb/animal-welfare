@@ -85,7 +85,7 @@ const Home = () => {
   return (
     <section className="container max-w-6xl px-8 mx-auto xl:px-5 h-screen">
       <div>
-        <div className="flex flex-wrap items-center sm:-mx-3 pt-12 pb-12">
+        <div className="flex flex-wrap items-center sm:-mx-3 py-40">
           <div className="w-full md:w-1/2 md:px-3">
             <div className="w-full pb-6 space-y-6 sm:max-w-md lg:max-w-lg md:space-y-4 lg:space-y-8 xl:space-y-9 sm:pr-5 lg:pr-0 md:pb-0">
               <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
@@ -127,7 +127,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-wrap -m-4">
+        <div className="flex flex-wrap -m-4 pb-20">
           <div className="p-4 md:w-1/3">
             <div className="flex rounded-lg h-full bg-gray-100 p-4 px-6 flex-col shadow-lg">
               <div className="flex items-center mb-3">
@@ -263,20 +263,19 @@ const Home = () => {
             aria-label="Page navigation example"
             className="flex justify-end space-x-2 mt-8"
           >
-            <ul class="flex items-center -space-x-px h-8 text-sm">
+            <ul className="flex items-center -space-x-px h-8 text-sm">
               <li>
                 <Link
                   href="#"
-                  class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
-                  <span class="sr-only">Previous</span>
+                  <span className="sr-only">Previous</span>
                   &larr;
                 </Link>
               </li>
               {[...Array(11).keys()].map((page) => (
-                <li>
+                <li key={page}>
                   <Link
-                    key={page}
                     href="#"
                     className={`flex items-center justify-center px-3 h-8 leading-tight ${
                       page === 0
@@ -291,9 +290,9 @@ const Home = () => {
               <li>
                 <Link
                   href="#"
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
                 >
-                  <span class="sr-only">Next</span>
+                  <span className="sr-only">Next</span>
                   &rarr;
                 </Link>
               </li>
