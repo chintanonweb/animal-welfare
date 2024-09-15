@@ -107,16 +107,16 @@ const Home = () => {
               </p>
               <div className="relative flex flex-col sm:flex-row sm:space-x-4">
                 <Link
-                  href="/auth/login"
+                  href="/donors/dashboard"
                   className="flex items-center w-full px-6 py-3 mb-3 text-lg text-white bg-indigo-600 rounded-md sm:mb-0 hover:bg-indigo-700 sm:w-auto"
                 >
-                  Login
+                  Donor
                 </Link>
                 <Link
-                  href="/auth/register"
+                  href="/feeders/dashboard"
                   className="flex items-center w-full px-6 py-3 mb-3 text-lg text-white bg-indigo-600 rounded-md sm:mb-0 hover:bg-indigo-700 sm:w-auto"
                 >
-                  Register
+                  Feeder
                 </Link>
               </div>
             </div>

@@ -8,28 +8,23 @@ import { checkConnection, retrievePublicKey } from "../utils/Freighter"; // Impo
 import { useGlobalContext } from "../context/GlobalContext";
 
 const Layout = ({ children }) => {
-  const [user, setUser] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [connected, setConnected] = useState(false); // State to track if the user is connected
   const [isConnecting, setIsConnecting] = useState(false); // State to track if the connection is in progress
   const router = useRouter();
   const pathname = usePathname();
-  const { publicKey, setPublicKey } = useGlobalContext(); // Use publicKey and setPublicKey from context
+  const { publicKey, setPublicKey, role, setRole } = useGlobalContext(); // Use publicKey and setPublicKey from context
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      setUser(user);
-      connect();
-    } else {
-      router.push("/auth/login");
-    }
-  }, [router]);
+    connect();
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    router.push("/auth/login");
+    localStorage.removeItem("publicKey");
+    setConnected(false);
+    setPublicKey(null);
+    router.push("/");
   };
 
   async function connect() {
@@ -40,13 +35,18 @@ const Layout = ({ children }) => {
         // Retrieve public key from Freighter
         const publicKey = await retrievePublicKey();
         if (publicKey) {
-          console.log(publicKey);
-
           setPublicKey(publicKey); // Set the retrieved public key
           setConnected(true); // Set connected state to true
 
           // Store the public key in local storage
           localStorage.setItem("publicKey", publicKey);
+
+          // Determine the role based on the current path
+          const currentPath = window.location.pathname;
+          const userRole = currentPath.startsWith("/donors/dashboard")
+            ? "Donor"
+            : "Feeder";
+          setRole(userRole);
         }
       }
     } catch (error) {
@@ -76,16 +76,14 @@ const Layout = ({ children }) => {
               <a href="#" className="flex items-center ms-2 md:me-24">
                 <TbHeartHandshake className="me-2 text-2xl dark:text-white" />
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                  {user.role === "Donor"
-                    ? "Donor Dashboard"
-                    : "Feeder Dashboard"}
+                  {role === "Donor" ? "Donor Dashboard" : "Feeder Dashboard"}
                 </span>
               </a>
             </div>
             <div className="flex items-center">
               <button
                 onClick={connect} // Call the connect function when the button is clicked
-                className="text-white overflow-hidden truncate w-40  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                className="text-white overflow-hidden truncate w-40 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 disabled={isConnecting} // Disable the button if the connection is in progress
               >
                 {isConnecting
@@ -93,7 +91,6 @@ const Layout = ({ children }) => {
                   : connected
                   ? publicKey
                   : "Connect to Freighter"}{" "}
-                {/* Show appropriate button text based on isConnecting state */}
               </button>
               <div className="flex items-center ms-3 relative">
                 <div>
@@ -121,20 +118,20 @@ const Layout = ({ children }) => {
                       className="text-sm text-gray-900 dark:text-white"
                       role="none"
                     >
-                      {user.role}
+                      {role}
                     </p>
                     <p
-                      className="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
+                      className="text-sm font-medium text-gray-900 overflow-hidden truncate w-40 dark:text-gray-300"
                       role="none"
                     >
-                      {user.email}
+                      {publicKey}
                     </p>
                   </div>
                   <ul className="py-1" role="none">
                     <li>
                       <Link
                         href={`${
-                          user.role === "Donor"
+                          role === "Donor"
                             ? "/donors/dashboard"
                             : "/feeders/dashboard"
                         }`}
@@ -190,7 +187,7 @@ const Layout = ({ children }) => {
             <li>
               <Link
                 href={`${
-                  user.role === "Donor"
+                  role === "Donor"
                     ? "/donors/dashboard"
                     : "/feeders/dashboard"
                 }`}
@@ -220,7 +217,6 @@ const Layout = ({ children }) => {
                 </span>
               </Link>
             </li>
-            {/* Add more menu items here */}
           </ul>
         </div>
       </aside>

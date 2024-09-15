@@ -6,7 +6,7 @@ import {
   updatePost,
   deletePostPermanently,
 } from "../utils/soroban";
-import { useGlobalContext } from '../context/GlobalContext';
+import { useGlobalContext } from "../context/GlobalContext";
 
 const FeederCardGrid = () => {
   const initialFeedings = [
@@ -58,14 +58,16 @@ const FeederCardGrid = () => {
   const [currentIndex, setCurrentIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { publicKey } = useGlobalContext(); 
+  const { publicKey } = useGlobalContext();
 
   useEffect(() => {
     // Retrieve the public key from local storage
     if (publicKey) {
       fetchAllPosts(publicKey);
     } else {
-      alert("Please connect your wallet to proceed. Static data will be displayed instead.");
+      alert(
+        "Please connect your wallet to proceed. Static data will be displayed instead."
+      );
       // Use static feedings data if public key is not available
       setFeedings(initialFeedings);
       setLoading(false);
@@ -201,12 +203,14 @@ const FeederCardGrid = () => {
   return (
     <div>
       <div className="flex items-center justify-end">
-        <button
-          onClick={() => fetchAllPosts(publicKey)}
-          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 me-2"
-        >
-          Reload Data
-        </button>
+        {
+          // <button
+          //   onClick={() => fetchAllPosts(publicKey)}
+          //   className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 me-2"
+          // >
+          //   Reload Data
+          // </button>
+        }
         <div
           onClick={handleAddNewFeeding}
           type="button"

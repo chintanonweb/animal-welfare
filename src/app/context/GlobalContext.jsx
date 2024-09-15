@@ -7,9 +7,10 @@ const GlobalContext = createContext();
 // Create a Provider Component
 export const GlobalProvider = ({ children }) => {
     const [publicKey, setPublicKey] = useState(null); // State to store the public key
+    const [role, setRole] = useState(null); // State to store the user's role (Donor or Feeder)
 
     return (
-        <GlobalContext.Provider value={{ publicKey, setPublicKey }}>
+        <GlobalContext.Provider value={{ publicKey, setPublicKey, role, setRole }}>
             {children}
         </GlobalContext.Provider>
     );
