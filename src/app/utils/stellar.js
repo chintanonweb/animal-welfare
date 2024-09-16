@@ -1,4 +1,12 @@
 import * as StellarSdk from "@stellar/stellar-sdk";
+import {
+  TransactionBuilder,
+  Networks,
+  StrKey,
+  Asset,
+  Operation,
+} from "@stellar/stellar-sdk";
+import toast from "react-hot-toast";
 
 const server = new StellarSdk.Horizon.Server(
   "https://horizon-testnet.stellar.org"
@@ -109,15 +117,15 @@ export async function sendFunds(destinationID, secretKey, amount) {
 }
 
 // Function to fetch payments (both sent and received) using the Horizon operations endpoint
-export async function   fetchPayments(accountId) {
+export async function fetchPayments(accountId) {
   try {
     const response = await fetch(
       `https://horizon-testnet.stellar.org/accounts/${accountId}/operations`
     );
     console.log(response);
-    
+
     const data = await response.json();
-console.log(data);
+    console.log(data);
 
     const payments = data._embedded.records.map((op) => ({
       type: op.type, // Will differentiate between sent and received
@@ -154,4 +162,40 @@ export async function fetchAccountDetails(accountId) {
     console.error("Error loading account:", error);
     return [];
   }
+}
+
+export async function fetchAccount(publicKey) {
+  // if (StrKey.isValidEd25519PublicKey(publicKey)) {
+  try {
+    let account = await server.loadAccount(publicKey);
+    return account;
+  } catch (err) {
+    // @ts-ignore
+    if (err.response?.status === 404) {
+      toast.error("account not funded on network");
+    } else {
+      // @ts-ignore
+      toast.error("something went wrong");
+    }
+  }
+  // } else {
+  //     throw new Error("error getting message")
+  // }
+}
+
+export async function fetchAccountBalances(publicKey) {
+  const account = await fetchAccount(publicKey);
+  return account;
+}
+
+export async function fetchRecentPayments(publicKey, limit = 10) {
+  const { records } = await server
+    .payments()
+    .forAccount(publicKey)
+    .limit(limit)
+    .order("desc")
+    .call();
+  console.log("record",records);
+
+  return records;
 }

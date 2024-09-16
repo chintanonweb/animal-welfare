@@ -1,7 +1,7 @@
 "use client";
 import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
-import { createAndFundWallet } from "../utils/stellar";
+import { createAndFundWallet, fetchAccount } from "../utils/stellar";
 import Account from "../components/Account";
 import Link from "next/link";
 import { AiOutlineSafetyCertificate } from "react-icons/ai";
@@ -10,6 +10,8 @@ import { TbWorldCheck } from "react-icons/tb";
 import { FaWallet } from "react-icons/fa6";
 import { isConnected } from "@stellar/freighter-api";
 import { useGlobalContext } from "../context/GlobalContext";
+import toast from "react-hot-toast";
+import { FaRegCopy } from "react-icons/fa6";
 
 const Wallet = () => {
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,22 @@ const Wallet = () => {
   });
 
   const [isAppConnected, setIsAppConnected] = useState(false); // Add state for connection status
+  const [balance, setBalance] = useState("0");
   const { publicKey } = useGlobalContext();
+
+  const handleFetchAccount = async () => {
+    setLoading(true);
+    try {
+      const account = await fetchAccount(publicKey);
+      console.log(account);
+      setBalance(account ? account?.balances[0].balance : "");
+      console.log(account?.balances[0].balance);
+
+      setLoading(false);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   // Fetch connection status on component load
   useEffect(() => {
@@ -36,26 +53,8 @@ const Wallet = () => {
       setIsAppConnected(connectionStatus);
     };
     checkConnection();
+    handleFetchAccount();
   }, []);
-
-  const handleCreateWallet = async () => {
-    setLoading(true);
-    try {
-      const { publicKey, secretKey } = await createAndFundWallet();
-      setWallet({ publicKey, secretKey });
-    } catch (error) {
-      console.error("Failed to create and fund wallet:", error);
-    }
-    setLoading(false);
-  };
-
-  const handleUseExistingWallet = () => {
-    if (inputKeys.publicKey && inputKeys.secretKey) {
-      setWallet(inputKeys);
-    } else {
-      alert("Please enter both public and secret keys.");
-    }
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -250,16 +249,21 @@ const Wallet = () => {
               <h3 className="mb-4 text-lg font-semibold text-gray-700">
                 Stellar Account
               </h3>
-              <div className="mb-4">
-                <p className="truncate">
+              <div className="mb-4 flex items-center">
+                <p className="truncate overflow-hidden text-ellipsis">
                   <strong>Public Key:</strong> {publicKey}
                 </p>
                 <button
                   onClick={() => handleCopy("publicKey")}
                   className="text-blue-500 underline hover:text-blue-700"
                 >
-                  {publicKey ? "Copied!" : "Copy Public Key"}
+                  {copySuccess.publicKey ? "Copied!" : <FaRegCopy />}
                 </button>
+              </div>
+              <div className="mb-4">
+                <p className="truncate">
+                  <strong>Balance:</strong> {balance}
+                </p>
               </div>
             </div>
             <div className="w-2/3">

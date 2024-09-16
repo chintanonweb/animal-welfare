@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import * as StellarSdk from "@stellar/stellar-sdk";
 import { getAllPosts, donate } from "../utils/soroban";
 import Link from "next/link";
-import { useGlobalContext } from '../context/GlobalContext';
+import { useGlobalContext } from "../context/GlobalContext";
 // import { api } from "~/trpc/react";
 
 // Modal Component
@@ -17,7 +17,7 @@ const DonateModal = ({
   const [amount, setAmount] = useState("");
   const [secretKey, setSecretKey] = useState("");
   const [loading, setLoading] = useState(false);
-  const { publicKey } = useGlobalContext(); 
+  const { publicKey } = useGlobalContext();
 
   // const bid = api.soroban.bid.useMutation({
   //   onError: ClientTRPCErrorHandler,
@@ -49,7 +49,6 @@ const DonateModal = ({
       //   highestBid: Number(data.bid),
       //   bidder: publicKey,
       // });
-
 
       // // Call sendFunds and wait for it to complete
       // await sendFunds(destinationAddress, secretKey, amount);
@@ -217,7 +216,7 @@ const DonorCardGrid = () => {
   const [currentFeeding, setCurrentFeeding] = useState(null);
   const [feedingsData, setFeedingsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { publicKey } = useGlobalContext(); 
+  const { publicKey } = useGlobalContext();
 
   useEffect(() => {
     if (publicKey) {
@@ -278,14 +277,14 @@ const DonorCardGrid = () => {
       ) : (
         <div>
           <div className="flex items-end justify-end">
-           {
-            //  <button
-            //   onClick={() => fetchFeedings(publicKey)}
-            //   className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            // >
-            //   Reload Data
-            // </button>
-          }
+            {
+              //  <button
+              //   onClick={() => fetchFeedings(publicKey)}
+              //   className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              // >
+              //   Reload Data
+              // </button>
+            }
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-3">
             {feedingsData.map((feeding) => (
@@ -311,6 +310,23 @@ const DonorCardGrid = () => {
                   <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                     Amount Received: {feeding.amountReceived} XLM
                   </p>
+                  <div className="mt-3">
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                      <div
+                        className="bg-green-500 h-2.5 rounded-full"
+                        style={{
+                          width: `${
+                            (feeding.amountReceived / feeding.amountRequested) *
+                            100
+                          }%`,
+                        }}
+                      ></div>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">
+                      ${feeding.amountReceived} / ${feeding.amountRequested}{" "}
+                      raised
+                    </p>
+                  </div>
                   <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 truncate">
                     Feeder Wallet Add.: {feeding.feederAddress}
                   </p>

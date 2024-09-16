@@ -241,12 +241,23 @@ const FeederCardGrid = () => {
                 <p className="text-sm text-gray-500 truncate">
                   {feeding.feederAddress}
                 </p>
-                <p className="text-sm text-gray-500">
-                  Requested: ${feeding.amountRequested}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Received: ${feeding.amountReceived}
-                </p>
+                <div className="mt-3">
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div
+                      className="bg-green-500 h-2.5 rounded-full"
+                      style={{
+                        width: `${
+                          (feeding.amountReceived / feeding.amountRequested) *
+                          100
+                        }%`,
+                      }}
+                    ></div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    ${feeding.amountReceived} / ${feeding.amountRequested}{" "}
+                    raised
+                  </p>
+                </div>
                 <p className="text-sm text-gray-500">
                   Status: {feeding.isActive ? "Active" : "Inactive"}
                 </p>
