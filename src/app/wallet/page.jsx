@@ -1,7 +1,7 @@
 "use client";
 import Layout from "../components/Layout";
 import { useState, useEffect } from "react";
-import { createAndFundWallet, fetchAccount } from "../utils/stellar";
+import { fetchAccount } from "../utils/stellar";
 import Account from "../components/Account";
 import Link from "next/link";
 import { AiOutlineSafetyCertificate } from "react-icons/ai";
@@ -69,6 +69,16 @@ const Wallet = () => {
         2000
       );
     });
+  };
+
+  const getTruncatedPublicKey = (inputText) => {
+    if (!inputText) return ""; // Handle undefined/null cases
+
+    // Directly slice the string instead of splitting by spaces
+    const firstFive = inputText.slice(0, 5); // First 5 characters
+    const lastFive = inputText.slice(-5); // Last 5 characters
+
+    return `${firstFive} ... ${lastFive}`; // Combine them with "..."
   };
 
   return (
@@ -250,8 +260,9 @@ const Wallet = () => {
                 Stellar Account
               </h3>
               <div className="mb-4 flex items-center">
-                <p className="truncate overflow-hidden text-ellipsis">
-                  <strong>Public Key:</strong> {publicKey}
+                <p className="truncate overflow-hidden text-ellipsis mr-1">
+                  <strong>Public Key:</strong>{" "}
+                  {getTruncatedPublicKey(publicKey)}
                 </p>
                 <button
                   onClick={() => handleCopy("publicKey")}

@@ -32,7 +32,7 @@ const Card = ({ project }) => {
             ></div>
           </div>
           <p className="text-xs text-gray-500 mt-1">
-            {project.amountReceived} / {project.amountRequested} raised
+            {project.amountReceived} XLM / {project.amountRequested} XLM raised
           </p>
         </div>
         <div className="mt-2 flex items-center space-x-2">
@@ -60,8 +60,8 @@ const Home = () => {
       title: "Feed the Cats",
       imageUrl: "https://d.newsweek.com/en/full/2050102/stray-cats.jpg",
       description: "Help feed the stray cats in the street.",
-      amountRequested: 100,
-      amountReceived: 50,
+      amountRequested: 1000,
+      amountReceived: 250,
     },
     {
       id: 2,
@@ -90,7 +90,7 @@ const Home = () => {
             <div className="w-full pb-6 space-y-6 sm:max-w-md lg:max-w-lg md:space-y-4 lg:space-y-8 xl:space-y-9 sm:pr-5 lg:pr-0 md:pb-0">
               <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
                 <span className="block text-indigo-600 xl:inline">
-                  Animal Welfare App
+                  PawPatrons
                 </span>
               </h1>
               <h6 className="text-4xl font-extrabold tracking-tight text-gray-900">
@@ -102,7 +102,7 @@ const Home = () => {
                 </span>
               </h6>
               <p className="mx-auto text-base text-gray-500 sm:max-w-md lg:text-xl md:max-w-3xl">
-                Connect with feeders and donors to support animal welfare help
+                Connect with caretakers and donors to support animal welfare, help
                 feed and care for animals in need.
               </p>
               <div className="relative flex flex-col sm:flex-row sm:space-x-4">
@@ -110,13 +110,7 @@ const Home = () => {
                   href="/donors/dashboard"
                   className="flex items-center w-full px-6 py-3 mb-3 text-lg text-white bg-indigo-600 rounded-md sm:mb-0 hover:bg-indigo-700 sm:w-auto"
                 >
-                  Donor
-                </Link>
-                <Link
-                  href="/feeders/dashboard"
-                  className="flex items-center w-full px-6 py-3 mb-3 text-lg text-white bg-indigo-600 rounded-md sm:mb-0 hover:bg-indigo-700 sm:w-auto"
-                >
-                  Feeder
+                  Explore &rarr;
                 </Link>
               </div>
             </div>
@@ -244,8 +238,8 @@ const Home = () => {
         <div className="py-10">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="p-4 bg-white shadow-lg rounded-xl h-full flex justify-center flex-col">
-              <div className="text-5xl font-bold text-gray-900 mb-4">
-                Newly Verified Feeder
+              <div className="text-4xl font-bold text-gray-900 mb-4">
+                Newly Verified Caretakers
               </div>
               <Link
                 href="#"
@@ -259,7 +253,7 @@ const Home = () => {
               <Card key={index} project={project} />
             ))}
           </div>
-          <nav
+          {/* <nav
             aria-label="Page navigation example"
             className="flex justify-end space-x-2 mt-8"
           >
@@ -297,7 +291,7 @@ const Home = () => {
                 </Link>
               </li>
             </ul>
-          </nav>
+          </nav> */}
         </div>
       </div>
     </section>

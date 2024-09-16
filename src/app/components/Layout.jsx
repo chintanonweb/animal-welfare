@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
   const { publicKey, setPublicKey, role, setRole } = useGlobalContext(); // Use publicKey and setPublicKey from context
 
   useEffect(() => {
-    connect();
+    // connect();
   }, []);
 
   const handleLogout = () => {
@@ -25,6 +25,17 @@ const Layout = ({ children }) => {
     setConnected(false);
     setPublicKey(null);
     router.push("/");
+  };
+
+  // Function to truncate the text
+  const getTruncatedPublicKey = (inputText) => {
+    if (!inputText) return ""; // Handle undefined/null cases
+
+    // Directly slice the string instead of splitting by spaces
+    const firstFive = inputText.slice(0, 5); // First 5 characters
+    const lastFive = inputText.slice(-5); // Last 5 characters
+
+    return `${firstFive} ... ${lastFive}`; // Combine them with "..."
   };
 
   async function connect() {
@@ -73,25 +84,29 @@ const Layout = ({ children }) => {
                 <span className="sr-only">Open sidebar</span>
                 <FaBars />
               </button>
-              <a href="#" className="flex items-center ms-2 md:me-24">
+              <a href="/" className="flex items-center ms-2 md:me-24">
                 <TbHeartHandshake className="me-2 text-2xl dark:text-white" />
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                  {role === "Donor" ? "Donor Dashboard" : "Feeder Dashboard"}
+                  PawPatrons
                 </span>
               </a>
             </div>
             <div className="flex items-center">
               <button
                 onClick={connect} // Call the connect function when the button is clicked
-                className="text-white overflow-hidden truncate w-40 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 disabled={isConnecting} // Disable the button if the connection is in progress
               >
-                {isConnecting
+                {/* {isConnecting
                   ? "Connecting.."
                   : connected
-                  ? publicKey
-                  : "Connect to Freighter"}{" "}
+                  ? getTruncatedPublicKey(publicKey) // Call your truncation function here
+                  : "Connect to Freighter"} */}
+                  {
+                    publicKey ? getTruncatedPublicKey(publicKey) : "Connect to Freighter"
+                  }
               </button>
+
               <div className="flex items-center ms-3 relative">
                 <div>
                   <button
@@ -113,7 +128,7 @@ const Layout = ({ children }) => {
                   className={`absolute right-0 top-6 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600 ${transClass}`}
                   id="dropdown-user"
                 >
-                  <div className="px-4 py-3" role="none">
+                  {/* <div className="px-4 py-3" role="none">
                     <p
                       className="text-sm text-gray-900 dark:text-white"
                       role="none"
@@ -126,7 +141,7 @@ const Layout = ({ children }) => {
                     >
                       {publicKey}
                     </p>
-                  </div>
+                  </div> */}
                   <ul className="py-1" role="none">
                     <li>
                       <Link
@@ -166,7 +181,7 @@ const Layout = ({ children }) => {
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                         role="menuitem"
                       >
-                        Sign out
+                        Disconnect wallet
                       </a>
                     </li>
                   </ul>
@@ -186,20 +201,28 @@ const Layout = ({ children }) => {
           <ul className="space-y-2 font-medium">
             <li>
               <Link
-                href={`${
-                  role === "Donor"
-                    ? "/donors/dashboard"
-                    : "/feeders/dashboard"
-                }`}
+                href="/donors/dashboard"
                 className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group ${
-                  pathname === "/donors/dashboard" ||
+                  pathname === "/donors/dashboard"
+                    ? "bg-gray-100 dark:bg-gray-700"
+                    : ""
+                }`}
+              >
+                <FaChartPie />
+                <span className="ms-3">Donor</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/feeders/dashboard"
+                className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group ${
                   pathname === "/feeders/dashboard"
                     ? "bg-gray-100 dark:bg-gray-700"
                     : ""
                 }`}
               >
                 <FaChartPie />
-                <span className="ms-3">Dashboard</span>
+                <span className="ms-3">Feeder</span>
               </Link>
             </li>
             <li>

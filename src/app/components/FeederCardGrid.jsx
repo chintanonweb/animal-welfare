@@ -61,17 +61,19 @@ const FeederCardGrid = () => {
   const { publicKey } = useGlobalContext();
 
   useEffect(() => {
+    setFeedings(initialFeedings);
+
     // Retrieve the public key from local storage
-    if (publicKey) {
-      fetchAllPosts(publicKey);
-    } else {
-      alert(
-        "Please connect your wallet to proceed. Static data will be displayed instead."
-      );
-      // Use static feedings data if public key is not available
-      setFeedings(initialFeedings);
-      setLoading(false);
-    }
+    // if (publicKey) {
+    //   fetchAllPosts(publicKey);
+    // } else {
+    //   alert(
+    //     "Please connect your wallet to proceed. Static data will be displayed instead."
+    //   );
+    //   // Use static feedings data if public key is not available
+    //   setFeedings(initialFeedings);
+    //   setLoading(false);
+    // }
   }, []);
 
   const fetchAllPosts = async (publicKey) => {

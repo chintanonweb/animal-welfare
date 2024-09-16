@@ -4,7 +4,6 @@ import * as StellarSdk from "@stellar/stellar-sdk";
 import { getAllPosts, donate } from "../utils/soroban";
 import Link from "next/link";
 import { useGlobalContext } from "../context/GlobalContext";
-// import { api } from "~/trpc/react";
 
 // Modal Component
 const DonateModal = ({
@@ -19,10 +18,6 @@ const DonateModal = ({
   const [loading, setLoading] = useState(false);
   const { publicKey } = useGlobalContext();
 
-  // const bid = api.soroban.bid.useMutation({
-  //   onError: ClientTRPCErrorHandler,
-  // });
-
   const handleDonate = async () => {
     // if(!publicKey) {
     //   // TODO Connect wallet flow here
@@ -36,19 +31,6 @@ const DonateModal = ({
     setLoading(true);
 
     try {
-      // const xdr = await bid.mutateAsync({
-      //   auctionId: auction_id,
-      //   bid: Number(data.bid),
-      //   bidderKey: publicKey,
-      // });
-      // const signedXDR = await signXDR(xdr);
-      // await soroban.mutateAsync({ xdr: signedXDR });
-      // // TODO: This would better be handled as a multi-step transaction on database
-      // persistBid.mutate({
-      //   auctionId: auction_id,
-      //   highestBid: Number(data.bid),
-      //   bidder: publicKey,
-      // });
 
       // // Call sendFunds and wait for it to complete
       // await sendFunds(destinationAddress, secretKey, amount);
@@ -127,7 +109,7 @@ const DonateModal = ({
             className="block w-full border border-gray-300 rounded-lg p-2"
           />
         </div>
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-gray-700 mb-1">Secret Key</label>
           <input
             type="text"
@@ -136,7 +118,7 @@ const DonateModal = ({
             onChange={(e) => setSecretKey(e.target.value)}
             className="block w-full border border-gray-300 rounded-lg p-2"
           />
-        </div>
+        </div> */}
         <div className="flex gap-2">
           <button
             onClick={handleDonate}
@@ -219,14 +201,18 @@ const DonorCardGrid = () => {
   const { publicKey } = useGlobalContext();
 
   useEffect(() => {
-    if (publicKey) {
-      fetchFeedings(publicKey);
-    } else {
-      alert("Please connect your wallet to proceed.");
-      // Use static feedings data if public key is not available
-      setFeedingsData(staticFeedings);
-      setLoading(false);
-    }
+    setLoading(true);
+    setFeedingsData(staticFeedings);
+    setLoading(false);
+
+    // if (publicKey) {
+    //   fetchFeedings(publicKey);
+    // } else {
+    //   alert("Please connect your wallet to proceed.");
+    //   // Use static feedings data if public key is not available
+    //   setFeedingsData(staticFeedings);
+    //   setLoading(false);
+    // }
   }, []);
 
   const fetchFeedings = async (publicKey) => {

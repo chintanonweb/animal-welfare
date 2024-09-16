@@ -6,7 +6,7 @@ const DonorsDashboard = () => {
 
   return (
     <Layout>
-      <h2 className="text-xl">Welcome to the Donors Dashboard</h2>
+      <h2 className="text-xl">Donors Dashboard</h2>
         <DonorCardGrid />
     </Layout>
   );
