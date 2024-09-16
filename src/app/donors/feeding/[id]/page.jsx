@@ -2,37 +2,40 @@
 import { useState, useEffect } from "react";
 import Layout from "../../../components/Layout";
 import { getPostById } from "../../../utils/soroban";
-import { useGlobalContext } from '../../../context/GlobalContext';
+import { useGlobalContext } from "../../../context/GlobalContext";
 
 const FeedingDetails = ({ params }) => {
   const { id } = params;
   const [feeding, setFeeding] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { publicKey } = useGlobalContext(); 
+  const { publicKey } = useGlobalContext();
 
   useEffect(() => {
-    const fetchFeedingDetails = async () => {
-      if (publicKey) {
-        try {
-          const response = await getPostById(publicKey, id);
-          setFeeding(response);
-        } catch (error) {
-          console.error("Error fetching feeding details:", error);
-          // Use static data as fallback
-          setFeeding(staticFeeding);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        alert("Please connect your wallet to view details.");
-        // Fallback to static data
-        setFeeding(staticFeeding);
-        setLoading(false);
-      }
-    };
+    setLoading(true);
+    setFeeding(staticFeeding);
+    setLoading(false);
+    // const fetchFeedingDetails = async () => {
+    //   if (publicKey) {
+    //     try {
+    //       const response = await getPostById(publicKey, id);
+    //       setFeeding(response);
+    //     } catch (error) {
+    //       console.error("Error fetching feeding details:", error);
+    //       // Use static data as fallback
+    //       setFeeding(staticFeeding);
+    //     } finally {
+    //       setLoading(false);
+    //     }
+    //   } else {
+    //     alert("Please connect your wallet to view details.");
+    //     // Fallback to static data
+    //     setFeeding(staticFeeding);
+    //     setLoading(false);
+    //   }
+    // };
 
-    // Ensure fetchFeedingDetails is called only once
-    fetchFeedingDetails();
+    // // Ensure fetchFeedingDetails is called only once
+    // fetchFeedingDetails();
   }, [id]); // Ensure dependency array is correct
 
   // Static feeding data for fallback
@@ -103,18 +106,28 @@ const FeedingDetails = ({ params }) => {
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white truncate">
               {feeding.title}
             </h5>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 truncate">
+            <p className="mb-3 font-normal text-gray-700 dark:text-gray-200 truncate">
               {feeding.description}
             </p>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 truncate">
-              Amount Requested: {feeding.amountRequested} XLM
-            </p>
-            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 truncate">
-              Amount Received: {feeding.amountReceived} XLM
-            </p>
-            <p className="text-sm text-gray-500 overflow-hidden truncate w-64 truncate">
+            <div className="mb-3">
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  className="bg-green-500 h-2.5 rounded-full"
+                  style={{
+                    width: `${
+                      (feeding.amountReceived / feeding.amountRequested) * 100
+                    }%`,
+                  }}
+                ></div>
+              </div>
+              <p className="text-xs text-gray-200 mt-1 mb-3">
+                {feeding.amountReceived} XLM / {feeding.amountRequested} XLM
+                raised
+              </p>
+            </div>
+            {/* <p className="text-sm text-gray-200 overflow-hidden truncate w-64">
               Wallet: {feeding.feederAddress}
-            </p>
+            </p> */}
             {/*<button className="bg-green-500 text-white p-2 rounded mt-4 self-end mt-auto">
               Donate Now
             </button>*/}
